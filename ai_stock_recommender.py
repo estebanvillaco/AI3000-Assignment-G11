@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 AI in Retail Business - Smarter Stock Recommender (Seasonal Menu Version)
 ------------------------------------------------------------------------
