@@ -1,91 +1,125 @@
-# AI-Powered Stock Recommender
+# AI in Retail Business - Simple Stock Recommender
 
-This project is a single-file Python application that predicts daily units sold for products in retail stores and provides stock replenishment recommendations. It uses a Random Forest model and computes safety stock, reorder points, and recommended orders.
+This Python script predicts daily product sales for a retail store and provides simple restocking recommendations based on predicted demand. It uses a **Decision Tree Regressor** to identify products that may need replenishing soon.
+
+---
+
+## Table of Contents
+
+* [Overview](#overview)
+* [Features](#features)
+* [Requirements](#requirements)
+* [Usage](#usage)
+* [How It Works](#how-it-works)
+* [Output](#output)
+* [Author & Course](#author--course)
+
+---
+
+## Overview
+
+Retail businesses need to maintain optimal inventory levels to avoid overstocking or stockouts. This script uses historical sales and inventory data to:
+
+* Predict daily units sold for each product.
+* Recommend which products should be restocked.
+* Suggest quantities to order based on predicted demand.
 
 ---
 
 ## Features
 
-* Auto-detects relevant columns in your CSV file.
-* Trains a Random Forest to predict daily units sold.
-* Iteratively forecasts the next N days per Store+Product.
-* Computes safety stock, reorder points, and weekly reorder recommendations.
-* Generates plots and saves CSV outputs:
-
-  * `predictions_next30days.csv`
-  * `stock_recommendations.csv`
+* Loads historical sales and inventory data from a CSV file.
+* Cleans and preprocesses data, including date parsing and categorical encoding.
+* Creates simple features such as **Day of Week** and **Month**.
+* Trains a **Decision Tree Regressor** to predict units sold.
+* Evaluates model performance using **MAE** and **R²** metrics.
+* Provides **top 5 restocking recommendations** with suggested order quantities.
+* Saves the recommendations to a CSV file.
 
 ---
 
 ## Requirements
 
-* Python 3.9+
-* Conda (recommended but optional)
-* Required Python packages:
+* Python 3.x
+* Libraries:
 
-  ```bash
-  pip install pandas numpy scikit-learn matplotlib
-  ```
+  * `pandas`
+  * `scikit-learn`
+
+Install dependencies using:
+
+```bash
+pip install pandas scikit-learn
+```
 
 ---
 
 ## Usage
 
-1. Clone the repository or copy the project folder locally.
+### 1. Prepare your CSV file
 
-2. Place your inventory CSV in a known path. The CSV must include at least:
+* Place your retail data CSV file in the same folder as the script.
+* Ensure the CSV contains at least the following columns (names can vary slightly):
 
-   * Date column (e.g., `Date`)
-   * Product column (e.g., `Product`, `SKU`)
-   * Units Sold column (e.g., `Units_Sold`, `Quantity`)
+  * Date of sale (e.g., `Date`, `SaleDate`)
+  * Product name (e.g., `Product`, `Item`)
+  * Units sold (e.g., `Units_Sold`, `Sales`)
+  * Inventory level (e.g., `Inventory`, `Stock`)
 
-3. Modify the `data` path in `ai_stock_recommender.py` depending on your OS:
 
-   **Mac / Linux**
+### 2. Run the script
 
-   ```python
-   data = "/Users/yourusername/path/to/retail_store_inventory.csv"
-   ```
+Open a terminal, navigate to the folder containing the script, and run:
 
-   **Windows**
+```bash
+python3 simple_stock_recommender.py
+```
 
-   ```python
-   data = "C:\\Users\\yourusername\\path\\to\\retail_store_inventory.csv"
-   ```
+## How It Works
 
-   **Tip:** Use raw strings `r"..."` or double backslashes `\\` for Windows paths.
+1. **Data Preparation:**
 
-4. (Optional) Create a Conda environment for isolation:
+   * Load historical sales and inventory data.
+   * Standardize column names and handle missing values.
+   * Extract features such as day of week, month, and product codes.
 
-   ```bash
-   conda create -n ai_stock python=3.10
-   conda activate ai_stock
-   pip install pandas numpy scikit-learn matplotlib
-   ```
+2. **Model Training:**
 
-5. Run the recommender:
+   * Split data into training (all but last 30 days) and testing (last 30 days).
+   * Train a `DecisionTreeRegressor` on the features:
+     `Product_Code`, `Inventory_Level`, `DayOfWeek`, `Month`.
 
-   ```bash
-   python ai_stock_recommender.py
-   ```
+3. **Prediction & Evaluation:**
 
----
+   * Predict units sold for the test set.
+   * Evaluate predictions using **Mean Absolute Error (MAE)** and **R² score**.
 
-## Outputs
+4. **Restock Recommendation:**
 
-* `predictions_next30days.csv`: Iterative daily sales forecasts per Store+Product.
-* `stock_recommendations.csv`: Recommended reorder quantities, EOQ, safety stock, etc.
-* Console prints top 10 actionable restock recommendations and a full summary.
-* Optional plots showing:
-
-  * Monthly sales trends
-  * Seasonality
-  * Top products by predicted demand
+   * Predict sales for the most recent date of each product.
+   * Compare predicted sales to current inventory.
+   * Recommend restocking for products where predicted sales exceed inventory.
 
 ---
 
-## Notes
+## Output
 
-* Designed for university/learning purposes.
-* The CSV path **must be updated** to match your environment.
-* Make sure your CSV has a continuous daily time series per product if possible.
+The script prints:
+
+* Model performance metrics: MAE and R².
+* Top 5 products that need restocking with columns:
+
+  * `Product`
+  * `Inventory_Level`
+  * `Predicted_Sales`
+  * `Recommended_Order`
+
+It also saves the recommendations to `simple_stock_recommendations.csv`.
+
+
+---
+
+## Author & Course
+
+**Author:** Esteban Villacorta, Jonas Ambaya, Adrian Lafjell Ed (Group 11) 
+**Course:** AI3000R - Artificial Intelligence for Business Applications
