@@ -8,7 +8,7 @@
 The **Smarter Stock Recommender** helps retail businesses make smarter inventory decisions using Artificial Intelligence (AI).  
 It predicts **seasonal product demand** (Winter, Spring, Summer, Autumn) and recommends which products to **restock** based on your sales and inventory data.
 
-The program runs in a simple menu format — you can analyze multiple seasons in one session, and it only stops when you choose to exit.
+The program runs in a simple menu format, you can analyze multiple seasons in one session, and it only stops when you choose to exit.
 
 ---
 
@@ -18,7 +18,7 @@ Predicts seasonal sales using an AI model
 Recommends stock reorder quantities  
 Displays model accuracy and performance  
 Automatically saves results for each season  
-User-friendly loop menu — runs until you decide to stop  
+User-friendly loop menu, runs until you decide to stop  
 
 ---
 
